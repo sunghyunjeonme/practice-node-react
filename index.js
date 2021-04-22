@@ -3,6 +3,7 @@ const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
 const { User } = require("./models/User");
+const config = require("./config/key"); // 로컬 개발 환경과 배포 개발 환경에서의 분기 처리
 
 // application/x-www-form-urlencoded 데이터를 분석해서 가져옴
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,15 +12,12 @@ app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 mongoose
-  .connect(
-    "mongodb+srv://sunghyunjeonme:yu5282yu@practice-node-react.9ofkp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    }
-  )
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log(err));
 
